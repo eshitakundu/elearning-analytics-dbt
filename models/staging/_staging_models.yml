@@ -1,0 +1,147 @@
+version: 2
+
+models:
+  - name: stg_elearning__students
+    description: "Cleaned student records from raw source"
+    columns:
+      - name: student_id
+        description: "Primary key"
+        tests:
+          - unique
+          - not_null
+      - name: email
+        tests:
+          - unique
+          - not_null
+      - name: subscription_type
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Free', 'Pro', 'Enterprise']
+      - name: signup_date
+        tests:
+          - not_null
+
+  - name: stg_elearning__courses
+    description: "Cleaned course records from raw source"
+    columns:
+      - name: course_id
+        description: "Primary key"
+        tests:
+          - unique
+          - not_null
+      - name: title
+        tests:
+          - not_null
+      - name: level
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Beginner', 'Intermediate', 'Advanced']
+      - name: price
+        tests:
+          - not_null
+      - name: instructor_id
+        tests:
+          - not_null
+
+  - name: stg_elearning__enrollments
+    description: "Cleaned enrollment records from raw source"
+    columns:
+      - name: enrollment_id
+        description: "Primary key"
+        tests:
+          - unique
+          - not_null
+      - name: student_id
+        tests:
+          - not_null
+      - name: course_id
+        tests:
+          - not_null
+      - name: completion_status
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Completed', 'In Progress']
+      - name: enrolled_date
+        tests:
+          - not_null
+
+  - name: stg_elearning__instructors
+    description: "Cleaned instructor records from raw source"
+    columns:
+      - name: instructor_id
+        description: "Primary key"
+        tests:
+          - unique
+          - not_null
+      - name: name
+        tests:
+          - not_null
+      - name: rating
+        tests:
+          - not_null
+
+  - name: stg_elearning__payments
+    description: "Cleaned payment records from raw source"
+    columns:
+      - name: payment_id
+        description: "Primary key"
+        tests:
+          - unique
+          - not_null
+      - name: student_id
+        tests:
+          - not_null
+      - name: course_id
+        tests:
+          - not_null
+      - name: amount
+        tests:
+          - not_null
+      - name: status
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Successful']
+      - name: payment_method
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Credit Card', 'PayPal', 'Stripe', 'UPI', 'Bank Transfer']
+
+  - name: stg_elearning__reviews
+    description: "Cleaned review records from raw source"
+    columns:
+      - name: review_id
+        description: "Primary key"
+        tests:
+          - unique
+          - not_null
+      - name: student_id
+        tests:
+          - not_null
+      - name: course_id
+        tests:
+          - not_null
+      - name: rating
+        tests:
+          - not_null
+      - name: sentiment
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['positive', 'neutral', 'negative']
+      - name: verified_purchase
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Yes', 'No']
